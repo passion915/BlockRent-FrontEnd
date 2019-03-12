@@ -2,8 +2,8 @@
   <v-form ref="form" lazy-validation>
     <loading :active.sync="isLoading" :is-full-page="true" loader="bars" color="orange"> </loading>
     <p class="font-weight-bold text-xs-center">
-      Register your security deposit application<br />
-      by filling out the form below
+      Confirm the<br />
+      Application Details below:
     </p>
     <v-container>
       <h1>Tenant details:</h1>
@@ -290,7 +290,8 @@ import Loading from 'vue-loading-overlay'
 import 'vue-loading-overlay/dist/vue-loading.css'
 
 export default {
-  name: 'RegistrationForm',
+  name: 'ConfirmApplication',
+  props: ['applicationid'],
   data() {
     return {
       platform: false,
@@ -331,6 +332,18 @@ export default {
   components: {
     Loading
   },
+  async created() {
+    this.isLoading = true
+    console.log(this.applicationid)
+    this.$store
+      .dispatch('getApplicationDetail', {
+        appId: this.applicationid
+      })
+      .then(resp => {
+        this.isLoading = false
+        console.log(resp)
+      })
+  },
   methods: {
     async submit() {
       if (this.$refs.form.validate()) {
@@ -358,10 +371,6 @@ export default {
       if (this.$refs.form.validate()) {
         this.submit()
       }
-    },
-    closeAlert() {
-      this.platform = false
-      this.$router.push('/')
     }
   }
 }

@@ -14,7 +14,8 @@ export default new Router({
   routes: [
     {
       path: '/',
-      redirect: '/dashboard'
+      name: 'landing',
+      component: () => import('./views/Landing.vue')
     },
     {
       path: '/registration',
@@ -30,6 +31,12 @@ export default new Router({
       path: '/registration/temp',
       name: 'temp',
       component: () => import('./views/BankDetailsForm')
+    },
+    {
+      path: '/registration/:applicationid/confirm/',
+      name: 'confirm',
+      props: true,
+      component: () => import('./views/ConfirmApplication.vue')
     },
     {
       path: '/dashboard',
