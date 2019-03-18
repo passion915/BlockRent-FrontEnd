@@ -10,7 +10,7 @@
             <v-list-tile-title>Submit an Application</v-list-tile-title>
           </v-list-tile-content>
         </v-list-tile>
-        <v-list-tile to="/home/list">
+        <v-list-tile to="/dashboard/list">
           <v-list-tile-action>
             <v-icon class="yground--text">mdi-file-document-box-outline</v-icon>
           </v-list-tile-action>
@@ -43,12 +43,12 @@
       <v-btn icon>
         <v-icon>mdi-settings</v-icon>
       </v-btn>
-      <v-btn icon>
+      <v-btn icon @click="submitLogout">
         <v-icon>mdi-logout</v-icon>
       </v-btn>
     </v-toolbar>
-    <v-navigation-drawer v-model="rightDrawer" app right clipped dark class="update-bar">
-      <v-flex pl-3 style="min-height: 100%;">
+    <v-navigation-drawer v-model="rightDrawer" app right clipped dark class="update-bar" temporary>
+      <v-flex pl-3 style="height: 100%">
         <v-list class="left-border">
           <template>
             <v-list-tile>
@@ -107,6 +107,18 @@ export default {
           last_modified: '2 hours ago'
         }
       ]
+    }
+  },
+  methods: {
+    async submitLogout() {
+      this.$store
+        .dispatch('userLogout')
+        .then(() => {
+          this.$router.push('/')
+        })
+        .catch(err => {
+          this.$router.push('/')
+        })
     }
   }
 }
