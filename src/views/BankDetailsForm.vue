@@ -4,7 +4,6 @@
       Fill in your bank details for deposit,<br />
       refund or payment
     </p>
-    
     <v-container>
       <h1>Personal Bank details:</h1>
       <div class="section">
