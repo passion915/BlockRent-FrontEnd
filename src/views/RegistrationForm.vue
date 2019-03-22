@@ -185,12 +185,12 @@
                     <v-label>Property Sizes:</v-label>
                     <v-text-field
                       v-model="leaseApplicationDetails.propertySize"
+                      :rules="propertyRule"
+                      class="custom-round"
+                      suffix="m2"
                       single-line
                       outline
                       required
-                      class="custom-round inputPrice"
-                      :rules="propertyRule"
-                      type="number"
                     ></v-text-field>
                   </v-flex>
                   <v-flex xs12 sm4>
@@ -241,15 +241,29 @@
                   </v-flex>
                   <v-flex xs12 sm4>
                     <v-label>Annual Rent:</v-label>
-                    <v-text-field
-                      v-model="leaseApplicationDetails.annualRent"
-                      single-line
-                      outline
-                      required
-                      class="custom-round inputPrice"
-                      :rules="annualRule"
-                      type="number"
-                    ></v-text-field>
+                    <v-layout row wrap>
+                      <v-flex xs12 class="remove-padding">
+                        <v-text-field
+                          v-model="leaseApplicationDetails.annualRent"
+                          single-line
+                          outline
+                          required
+                          class="custom-round inputPrice remove-margin"
+                          :rules="annualRule"
+                          type="number"
+                        >
+                          <template v-slot:append-outer>
+                            <v-select
+                              v-model="leaseApplicationDetails.currencyType"
+                              :items="currency_list"
+                              outline
+                              single-line
+                            >
+                            </v-select>
+                          </template>
+                        </v-text-field>
+                      </v-flex>
+                    </v-layout>
                   </v-flex>
                   <v-flex xs12 sm4>
                     <v-label>Premise No. (DEWA):</v-label>
@@ -274,16 +288,31 @@
                   </v-flex>
                   <v-flex xs12 sm4>
                     <v-label>Total Contract Value:</v-label>
-                    <v-text-field
-                      v-model="leaseApplicationDetails.securityDepositAmount"
-                      :rules="securityDepositRules"
-                      class="custom-round inputPrice"
-                      type="number"
-                      min="1"
-                      single-line
-                      outline
-                      required
-                    ></v-text-field>
+                    <v-layout row wrap>
+                      <v-flex xs12 class="remove-padding">
+                        <v-text-field
+                          v-model="leaseApplicationDetails.securityDepositAmount"
+                          :rules="securityDepositRules"
+                          class="custom-round inputPrice remove-margin"
+                          type="number"
+                          min="1"
+                          max="100"
+                          single-line
+                          outline
+                          required
+                        >
+                          <template v-slot:append-outer>
+                            <v-select
+                              v-model="leaseApplicationDetails.currencyType"
+                              :items="currency_list"
+                              outline
+                              single-line
+                            >
+                            </v-select>
+                          </template>
+                        </v-text-field>
+                      </v-flex>
+                    </v-layout>
                   </v-flex>
                 </v-layout>
               </div>
@@ -350,6 +379,8 @@
                       type="number"
                       single-line
                       outline
+                      return-masked-value
+                      mask="##"
                     ></v-text-field>
                   </v-flex>
                 </v-layout>
@@ -417,7 +448,8 @@ export default {
         securityDepositAmount: '',
         propertyUsage: '',
         annualRent: '',
-        propertySize: ''
+        propertySize: '',
+        currencyType: 'AED'
       },
       otherParty: {
         firstName: '',
@@ -451,6 +483,7 @@ export default {
       isLoading: false,
       terms_list: ['Fixed Amount', '% of Contract Value'],
       property_usage: ['Residential', 'Commercial', 'Industrial'],
+      currency_list: ['AED', 'USD', 'GBP', 'AUD'],
       isPercent: false,
       min_date: '',
       max_date: ''
@@ -489,14 +522,14 @@ export default {
       }
     },
     validateUser() {
-      if (this.$refs.formUser.validate()) {
+      //if (this.$refs.formUser.validate()) {
         this.step = 2
-      }
+      //}
     },
     validateLease() {
-      if (this.$refs.formLease.validate()) {
+      //if (this.$refs.formLease.validate()) {
         this.depositDialog = true
-      }
+      //}
     },
     changeTerm(sel) {
       this.isPercent = sel === this.terms_list[1]
